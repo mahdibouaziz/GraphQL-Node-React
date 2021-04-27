@@ -4,6 +4,7 @@ const {
   GraphQLString,
   GraphQLID,
   GraphQLInt,
+  GraphQLList,
   GraphQLSchema,
 } = graphql;
 
@@ -48,6 +49,16 @@ const AuthorType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        const { id: authorId } = parent;
+        // console.log(authorId);
+        const grabedBooks = books.filter((book) => book.authorId == authorId);
+        // console.log(grabedBooks);
+        return grabedBooks;
+      },
+    },
   }),
 });
 
@@ -69,6 +80,18 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         //get the data from the db
         return authors.find((author) => author.id == args.id);
+      },
+    },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return books;
+      },
+    },
+    authors: {
+      type: new GraphQLList(AuthorType),
+      resolve(parent, args) {
+        return authors;
       },
     },
   },
