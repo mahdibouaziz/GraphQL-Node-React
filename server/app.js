@@ -2,6 +2,7 @@ const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./schema/schema");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
 const port = 4000;
@@ -12,6 +13,9 @@ const linkDB =
 mongoose
   .connect(linkDB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(console.log("Connected to the database"));
+
+// enable cros
+app.use(cors());
 
 //use our schema
 app.use(
