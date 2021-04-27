@@ -26,3 +26,19 @@ export const addBookMutation = gql`
     }
   }
 `;
+
+export const getBookQuery = gql`
+  query($id: ID!) {
+    book(id: $id) {
+      name
+      genre
+      author {
+        name
+        age
+        books {
+          name
+        }
+      }
+    }
+  }
+`;
